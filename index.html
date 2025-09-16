@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>A-Frame Farm Scene</title>
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    <script src="/components/barn.js"></script>
+    <script src="/components/fence.js"></script>
+    <script src="/components/animal.js"></script>
+    <script src="/components/cow.js"></script>
+    <script src="/components/rice.js"></script>
+    <script src="/components/mill.js"></script>
+  </head>
+  <body>
+    <a-scene>
+        <!-- Barn -->
+        <a-entity barn position="7 1.5 0"></a-entity>
+
+        <!-- Fence row -->
+        <a-entity fence="length: 15; count: 20" position="0 0 -10"></a-entity>
+
+        <a-entity cow="size: 1; color: #fff; spotColor: #000" position="-4 0 3"></a-entity>
+
+        <!-- Animals -->
+        <a-entity animal="color: #fff" position="2 0 2"></a-entity>
+        <a-entity animal="color: #000" position="-2 0 1"></a-entity>
+
+        <!-- Ground -->
+        <a-plane rotation="-90 0 0" width="20" height="20" color="#C2B280"></a-plane>
+        <a-sky color="#87CEEB"></a-sky>
+
+        <!-- Farm group -->
+        <a-entity position="0 0 -5">
+            <!-- Mill -->
+            <a-entity mill position="0 0 0"></a-entity>
+
+            <!-- Rice around -->
+            <a-entity rice="height:1.2" position="3 0 0"></a-entity>
+            <a-entity rice="height:1.2" position="-3 0 0"></a-entity>
+            <a-entity rice="height:1.2" position="0 0 3"></a-entity>
+            <a-entity rice="height:1.2" position="0 0 -3"></a-entity>
+        </a-entity>
+
+        <a-sky color="#87CEEB"></a-sky>
+    </a-scene>
+  </body>
+</html>
