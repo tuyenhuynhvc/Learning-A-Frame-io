@@ -13,7 +13,7 @@ AFRAME.registerComponent("mill", {
         // Tower
         const tower = document.createElement("a-cylinder");
         tower.setAttribute("radius", 0.6);
-        tower.setAttribute("height", d.height);
+        tower.setAttribute("height", d.height + 2.5);
         tower.setAttribute("color", d.color);
         tower.setAttribute("position", `0 ${d.height / 2} 0`);
         el.appendChild(tower);
@@ -24,7 +24,7 @@ AFRAME.registerComponent("mill", {
         roof.setAttribute("radius-top", 0.01);
         roof.setAttribute("height", 1);
         roof.setAttribute("color", d.roofColor);
-        roof.setAttribute("position", `0 ${d.height + 0.5} 0`);
+        roof.setAttribute("position", `0 ${d.height + 1.5} 0`);
         el.appendChild(roof);
 
         // Blades holder
@@ -34,22 +34,22 @@ AFRAME.registerComponent("mill", {
 
         // Add 4 blades
         for (let i = 0; i < 4; i++) {
-        const blade = document.createElement("a-box");
-        blade.setAttribute("width", 0.1);
-        blade.setAttribute("height", 2);
-        blade.setAttribute("depth", 0.1);
-        blade.setAttribute("color", d.bladeColor);
-        blade.setAttribute("rotation", `0 0 ${i * 90}`);
-        blades.appendChild(blade);
+            const blade = document.createElement("a-box");
+            blade.setAttribute("width", 0.1);
+            blade.setAttribute("height", 2);
+            blade.setAttribute("depth", 0.1);
+            blade.setAttribute("color", d.bladeColor);
+            blade.setAttribute("rotation", `0 0 ${i * 90}`);
+            blades.appendChild(blade);
         }
 
         // Animate rotation
         blades.setAttribute("animation", {
-        property: "rotation",
-        to: "0 0 360",
-        loop: true,
-        dur: 4000,
-        easing: "linear"
+            property: "rotation",
+            to: "0 0 360",
+            loop: true,
+            dur: 4000,
+            easing: "linear"
         });
 
         el.appendChild(blades);
