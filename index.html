@@ -14,13 +14,22 @@
   </head>
   <body>
     <a-scene>
+        <a-assets>
+          <audio id="cow_sound" src="./cows-on-pasture_animal-sound-149489.mp3"></audio>
+        </a-assets>
         <!-- Barn -->
         <a-entity barn position="7 1.5 0"></a-entity>
 
         <!-- Fence row -->
         <a-entity fence="length: 15; count: 20" position="0 0 -10"></a-entity>
 
-        <a-entity cow="size: 1; color: #fff; spotColor: #000" position="-4 0 3"></a-entity>
+        <a-entity id="cow" cow="size: 1; color: #fff; spotColor: #000" position="-4 0 3"
+          sound="src: #cow_sound; autoplay: true; loop: true"
+          animation__1="property: position; to: 0 0 3; dur: 4000; startEvents: step1; easing: linear"
+          animation__2="property: position; to: 4 0 5; dur: 4000; startEvents: step2; easing: linear"
+          animation__3="property: position; to: 0 0 5; dur: 4000; startEvents: step3; easing: linear"
+          animation__4="property: position; to: -4 0 5; dur: 4000; startEvents: step4; easing: linear"
+        ></a-entity>
 
         <!-- Animals -->
         <a-entity animal="color: #fff" position="2 0 2"></a-entity>
@@ -43,6 +52,26 @@
         </a-entity>
 
         <a-sky color="#87CEEB"></a-sky>
+        <script>
+          // Loop cow movement
+          function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
+            const cow = document.querySelector("#cow");
+            cow.addEventListener("loaded", async () => {
+              while (true) {
+                cow.emit("step1"); 
+                cow.components.sound.playSound();
+                await wait(4000);
+
+                cow.emit("step2"); await wait(4000);
+
+                cow.emit("step3");
+                cow.components.sound.playSound();
+                await wait(4000);
+                
+                cow.emit("step4"); await wait(4000);
+              }
+          });
+      </script>
     </a-scene>
   </body>
 </html>

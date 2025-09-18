@@ -26,41 +26,48 @@ AFRAME.registerComponent("cow", {
 
         // Legs
         const legOffsets = [
-        [-0.4, 0, -0.3],
-        [0.4, 0, -0.3],
-        [-0.4, 0, 0.3],
-        [0.4, 0, 0.3]
+            [-0.4, 0, -0.3],
+            [0.4, 0, -0.3],
+            [-0.4, 0, 0.3],
+            [0.4, 0, 0.3]
         ];
         legOffsets.forEach(([x, y, z]) => {
-        const leg = document.createElement("a-cylinder");
-        leg.setAttribute("radius", s * 0.1);
-        leg.setAttribute("height", s * 0.9);
-        leg.setAttribute("color", d.color);
-        leg.setAttribute("position", `${x * s} ${s * 0.45} ${z * s}`);
-        el.appendChild(leg);
+            const leg = document.createElement("a-cylinder");
+            leg.setAttribute("radius", s * 0.1);
+            leg.setAttribute("height", s * 0.9);
+            leg.setAttribute("color", d.color);
+            leg.setAttribute("position", `${x * s} ${s * 0.45} ${z * s}`);
+            leg.setAttribute("animation", {
+                property: "rotation",
+                to: "0 0 30",
+                dir: "alternate",
+                dur: 500,
+                loop: true
+            });
+            el.appendChild(leg);
         });
 
         // Horns
         const hornOffsets = [[0.2, 0.15], [0.2, -0.15]];
         hornOffsets.forEach(([x, z]) => {
-        const horn = document.createElement("a-cone");
-        horn.setAttribute("radius-bottom", s * 0.08);
-        horn.setAttribute("radius-top", 0.01);
-        horn.setAttribute("height", s * 0.25);
-        horn.setAttribute("color", "#EEE8AA");
-        horn.setAttribute("position", `${s * 1.2} 1.2 ${z}`);
-        horn.setAttribute("rotation", "0 0 -90");
-        el.appendChild(horn);
+            const horn = document.createElement("a-cone");
+            horn.setAttribute("radius-bottom", s * 0.08);
+            horn.setAttribute("radius-top", 0.01);
+            horn.setAttribute("height", s * 0.25);
+            horn.setAttribute("color", "#EEE8AA");
+            horn.setAttribute("position", `${s * 1.2} 1.2 ${z}`);
+            horn.setAttribute("rotation", "0 0 -90");
+            el.appendChild(horn);
         });
 
         // Ears
         const earOffsets = [[0.8, 0.25], [0.8, -0.25]];
         earOffsets.forEach(([x, z]) => {
-        const ear = document.createElement("a-sphere");
-        ear.setAttribute("radius", s * 0.15);
-        ear.setAttribute("color", d.color);
-        ear.setAttribute("position", `${x} 1 ${z}`);
-        el.appendChild(ear);
+            const ear = document.createElement("a-sphere");
+            ear.setAttribute("radius", s * 0.15);
+            ear.setAttribute("color", d.color);
+            ear.setAttribute("position", `${x} 1 ${z}`);
+            el.appendChild(ear);
         });
 
         // Tail
@@ -80,17 +87,17 @@ AFRAME.registerComponent("cow", {
 
         // Spots
         const spots = [
-        [0.2, 1.1, 0.4],
-        [-0.3, 0.9, -0.4],
-        [0.4, 1, -0.1]
+            [0.2, 1.1, 0.4],
+            [-0.3, 0.9, -0.4],
+            [0.4, 1, -0.1]
         ];
         spots.forEach(([x, y, z]) => {
-        const spot = document.createElement("a-circle");
-        spot.setAttribute("radius", s * 0.2);
-        spot.setAttribute("color", d.spotColor);
-        spot.setAttribute("position", `${x} ${y} ${z}`);
-        spot.setAttribute("rotation", "90 0 0");
-        el.appendChild(spot);
+            const spot = document.createElement("a-circle");
+            spot.setAttribute("radius", s * 0.2);
+            spot.setAttribute("color", d.spotColor);
+            spot.setAttribute("position", `${x} ${y} ${z}`);
+            spot.setAttribute("rotation", "90 0 0");
+            el.appendChild(spot);
         });
     }
 });
