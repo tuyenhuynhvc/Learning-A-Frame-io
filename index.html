@@ -11,8 +11,11 @@
     <script src="./components/cow.js"></script>
     <script src="./components/rice.js"></script>
     <script src="./components/mill.js"></script>
+    <link rel="stylesheet" href="./styles/overlay.css" />
   </head>
   <body>
+    <!-- Overlay screen -->
+    <div id="overlay">▶ Visit Tuyen's Farm</div>
     <a-scene>
         <a-assets>
           <audio id="cow_sound" src="./cows-on-pasture_animal-sound-149489.mp3"></audio>
@@ -53,33 +56,41 @@
 
         <a-sky color="#87CEEB"></a-sky>
         <script>
-          // Loop cow movement
-          function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
-            const cow = document.querySelector("#cow");
-            // Unlock audio on first user gesture
-            window.addEventListener("click", () => {
-              const ctx = AFRAME.scenes[0].audioListener.context;
-              if (ctx.state === "suspended") {
-                ctx.resume();
-              }
-              cow.components.sound.playSound(); // play immediately after unlock
-            });
-            cow.addEventListener("loaded", async () => {
-              while (true) {
-                cow.emit("step1"); 
-                cow.components.sound.playSound();
-                await wait(4000);
+          function wait(ms){ return new Promise(r => setTimeout(r, ms)); }
+          const overlay = document.getElementById("overlay");
+          const cow = document.getElementById("cow");
 
-                cow.emit("step2"); await wait(4000);
+          async function startFarm() {
+            // Unlock audio context
+            const ctx = AFRAME.scenes[0].audioListener.context;
+            if (ctx.state === "suspended") {
+              await ctx.resume();
+            }
 
-                cow.emit("step3");
-                cow.components.sound.playSound();
-                await wait(4000);
-                
-                cow.emit("step4"); await wait(4000);
-              }
-          });
-      </script>
+            // Hide overlay
+            overlay.style.display = "none";
+
+            // Start cow movement + moo loop
+            while (true) {
+              cow.emit("step1");
+              cow.components.sound.playSound();
+              await wait(4000);
+
+              cow.emit("step2");
+              await wait(4000);
+
+              cow.emit("step3");
+              cow.components.sound.playSound();
+              await wait(4000);
+
+              cow.emit("step4");
+              await wait(4000);
+            }
+          }
+
+          overlay.addEventListener("click", startFarm);
+          window.addEventListener("keydown", startFarm, { once: true });
+    </script>
     </a-scene>
   </body>
 </html>
