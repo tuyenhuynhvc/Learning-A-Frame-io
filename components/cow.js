@@ -103,7 +103,7 @@ AFRAME.registerComponent("cow", {
         // Sound (replace with working cluck URL)
         el.setAttribute(
             "sound",
-            "src: url(cows-on-pasture_animal-sound-149489.mp3); autoplay: true; loop: true; volume: 2;"
+            "src: url(assets/cows-on-pasture_animal-sound-149489.mp3); autoplay: true; loop: true; volume: 2;"
         );
     }
 });
