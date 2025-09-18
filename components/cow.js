@@ -99,5 +99,11 @@ AFRAME.registerComponent("cow", {
             spot.setAttribute("rotation", "90 0 0");
             el.appendChild(spot);
         });
+
+        // Sound (replace with working cluck URL)
+        el.setAttribute(
+            "sound",
+            "src: url(../cows-on-pasture_animal-sound-149489.mp3); autoplay: true; loop: true; volume: 2;"
+        );
     }
 });
