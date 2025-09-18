@@ -30,7 +30,7 @@ init: function () {
     // Sound (replace with working cluck URL)
     el.setAttribute(
         "sound",
-        "src: url(../chicken-soundscape-200111.mp3); autoplay: true; loop: true; volume: 2;"
+        "src: url(chicken-soundscape-200111.mp3); autoplay: true; loop: true; volume: 2;"
     );
 
     // Pecking animation
