@@ -56,6 +56,14 @@
           // Loop cow movement
           function wait(ms){ return new Promise(r=>setTimeout(r,ms)); }
             const cow = document.querySelector("#cow");
+            // Unlock audio on first user gesture
+            window.addEventListener("click", () => {
+              const ctx = AFRAME.scenes[0].audioListener.context;
+              if (ctx.state === "suspended") {
+                ctx.resume();
+              }
+              cow.components.sound.playSound(); // play immediately after unlock
+            });
             cow.addEventListener("loaded", async () => {
               while (true) {
                 cow.emit("step1"); 
