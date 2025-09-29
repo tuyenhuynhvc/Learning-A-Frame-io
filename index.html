@@ -12,13 +12,33 @@
     <script src="./components/rice.js"></script>
     <script src="./components/mill.js"></script>
     <script src="./components/chicken.js"></script>
+    <script src="./components/weather.js"></script>
     <link rel="stylesheet" href="./styles/overlay.css" />
   </head>
   <body>
     <!-- Overlay screen -->
     <div id="overlay">▶ Visit Tuyen's Farm</div>
 
-    <a-scene>
+    <!-- Weather Controls -->
+    <div id="weather-controls" style="position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(0,0,0,0.7); padding: 15px; border-radius: 10px; color: white; font-family: Arial, sans-serif;">
+      <h3 style="margin: 0 0 10px 0; font-size: 16px;">Weather Controls</h3>
+      <div id="current-weather" style="margin-bottom: 10px; font-size: 14px;">Current: <span id="weather-status">Sunny</span></div>
+      <div style="display: flex; gap: 5px; flex-wrap: wrap;">
+        <button id="sunny-btn" class="weather-btn" style="padding: 5px 10px; background: #FFD700; color: #000; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">☀️ Sunny</button>
+        <button id="cloudy-btn" class="weather-btn" style="padding: 5px 10px; background: #B0C4DE; color: #000; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">☁️ Cloudy</button>
+        <button id="rainy-btn" class="weather-btn" style="padding: 5px 10px; background: #708090; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">🌧️ Rainy</button>
+        <button id="windy-btn" class="weather-btn" style="padding: 5px 10px; background: #A9A9A9; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">💨 Windy</button>
+        <button id="storm-btn" class="weather-btn" style="padding: 5px 10px; background: #2F2F2F; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">⛈️ Storm</button>
+      </div>
+      <div style="margin-top: 10px;">
+        <button id="auto-weather-btn" style="padding: 5px 10px; background: #32CD32; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 12px;">🔄 Auto Weather</button>
+      </div>
+    </div>
+
+    <a-scene weather="type: sunny; intensity: 1; windSpeed: 1">
+      <!-- Weather System -->
+      <a-entity weather></a-entity>
+
       <!-- Barn -->
       <a-entity barn position="7 1.5 0"></a-entity>
 
@@ -65,6 +85,9 @@
         const cow = document.getElementById("cow");
         const chicken = document.getElementById("chicken");
 
+        let weatherInterval = null;
+        let autoWeatherEnabled = false;
+
         async function startFarm() {
           // Unlock audio context
           const ctx = AFRAME.scenes[0].audioListener.context;
@@ -74,6 +97,81 @@
 
           // Hide overlay
           overlay.style.display = "none";
+          
+          // Start weather system
+          const weatherEntity = document.querySelector('[weather]');
+          if (weatherEntity) {
+            weatherEntity.components.weather.startWeatherAnimation();
+          }
+          
+          // Setup weather controls
+          setupWeatherControls();
+        }
+
+        function setupWeatherControls() {
+          const weatherEntity = document.querySelector('[weather]');
+          const weatherStatus = document.getElementById('weather-status');
+          const sunnyBtn = document.getElementById('sunny-btn');
+          const cloudyBtn = document.getElementById('cloudy-btn');
+          const rainyBtn = document.getElementById('rainy-btn');
+          const windyBtn = document.getElementById('windy-btn');
+          const stormBtn = document.getElementById('storm-btn');
+          const autoWeatherBtn = document.getElementById('auto-weather-btn');
+
+          function changeWeather(weatherType) {
+            if (weatherEntity && weatherEntity.components.weather) {
+              // Stop auto weather
+              if (weatherInterval) {
+                clearInterval(weatherInterval);
+                weatherInterval = null;
+                autoWeatherEnabled = false;
+                autoWeatherBtn.textContent = '🔄 Auto Weather';
+              }
+
+              // Clear existing weather effects
+              weatherEntity.components.weather.clearWeatherEffects();
+              
+              // Update weather type
+              weatherEntity.setAttribute('weather', 'type', weatherType);
+              
+              // Create new weather effects
+              weatherEntity.components.weather.createWeatherSystem();
+              
+              // Update status
+              weatherStatus.textContent = weatherType.charAt(0).toUpperCase() + weatherType.slice(1);
+              
+              console.log(`Weather changed to: ${weatherType}`);
+            }
+          }
+
+          function toggleAutoWeather() {
+            if (autoWeatherEnabled) {
+              // Stop auto weather
+              if (weatherInterval) {
+                clearInterval(weatherInterval);
+                weatherInterval = null;
+              }
+              autoWeatherEnabled = false;
+              autoWeatherBtn.textContent = '🔄 Auto Weather';
+            } else {
+              // Start auto weather
+              weatherInterval = setInterval(() => {
+                const weatherTypes = ['sunny', 'cloudy', 'rainy', 'windy', 'storm'];
+                const randomWeather = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+                changeWeather(randomWeather);
+              }, 30000);
+              autoWeatherEnabled = true;
+              autoWeatherBtn.textContent = '⏹️ Stop Auto';
+            }
+          }
+
+          // Add event listeners
+          sunnyBtn.addEventListener('click', () => changeWeather('sunny'));
+          cloudyBtn.addEventListener('click', () => changeWeather('cloudy'));
+          rainyBtn.addEventListener('click', () => changeWeather('rainy'));
+          windyBtn.addEventListener('click', () => changeWeather('windy'));
+          stormBtn.addEventListener('click', () => changeWeather('storm'));
+          autoWeatherBtn.addEventListener('click', toggleAutoWeather);
         }
 
         overlay.addEventListener("click", startFarm);
