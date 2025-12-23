@@ -45,10 +45,6 @@
       <!-- Fence row -->
       <a-entity fence="length: 15; count: 20" position="0 0 -10"></a-entity>
 
-      <!-- Hand tracking controls -->
-      <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
-      <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
-
       <!-- Cow with walking + mooing animation -->
       <a-entity id="cow" cow="size: 1; color: #fff; spotColor: #000" position="-4 0 3"
         animation__1="property: position; to: 0 0 3; dur: 4000; startEvents: step1; easing: linear"
@@ -207,6 +203,9 @@
           }
         });
       </script>
+      <!-- Hand tracking controls -->
+      <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
+      <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
     </a-scene>
   </body>
 </html>
